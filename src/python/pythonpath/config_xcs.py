@@ -60,9 +60,3 @@ def create_config_xcs(option_vars, temp_dir):
         tree.write(xf.name, "utf-8", True)
 
     logger.info("%s created in -> %s", xml_file, temp_dir)
-
-
-if __name__ == "__main__":
-    with open('logging_conf.yaml', 'r') as f:
-        log_cfg = yaml.safe_load(f.read())
-        logging.config.dictConfig(log_cfg)

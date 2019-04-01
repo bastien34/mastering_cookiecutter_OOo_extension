@@ -8,7 +8,7 @@ from _elementtree import Element
 
 import yaml
 from helpers import (create_str_prop,
-                    create_str_loc_prop)
+                     create_str_loc_prop)
 
 # General
 xml_file = "AddonUI.xcu"
@@ -121,10 +121,3 @@ def create_addon(funcs, output_dir):
         tree.write(xf.name, "utf-8", True)
 
     logger.info("%s created in -> %s", xml_file, path_file)
-
-
-if __name__ == "__main__":
-    with open('logging_conf.yaml', 'r') as f:
-        log_cfg = yaml.safe_load(f.read())
-        logging.config.dictConfig(log_cfg)
-    # create_addon()

@@ -35,7 +35,6 @@ from dialog import create_dialog
 
 from ext_gen_utils import (
     msgbox,
-    mri,
     get_config,
     get_package_path,
 )
@@ -49,11 +48,7 @@ temp_dir = '/tmp/ext_gen'
 
 
 class Environ:
-    """
-    Supply environment keys.
-        eg: env = Environ()
-            my_url = env.URL
-    """
+    """Supply environment keys."""
 
     def __init__(self):
         self.node = NODE
