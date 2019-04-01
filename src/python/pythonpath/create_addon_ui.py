@@ -7,46 +7,13 @@ import xml.etree.ElementTree as ET
 from _elementtree import Element
 
 import yaml
-from helper import (create_str_prop,
+from helpers import (create_str_prop,
                     create_str_loc_prop)
 
 # General
-extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
-package_name = "{{cookiecutter.extension_name}}"
-
-# file_location = "../tmp/"  # dev
-file_location = "../{{cookiecutter.extension_name}}/src/"
 xml_file = "AddonUI.xcu"
 
 logger = logging.getLogger(__name__)
-
-
-class Function:
-    """
-    Define a function.
-
-    Warning: Location attribute contains an ampersand "&" that must
-    be converted as "&amp;" in xml file.
-    """
-
-    def __init__(self, name, label, icon):
-        self.name = name
-        self.label = label
-        self.icon = icon
-
-    @property
-    def location(self):
-        return f"vnd.sun.star.script:{extension_filename}|python" \
-            f"|{package_name}.py${self.name}?language=Python&location=user:" \
-            f"uno_packages"
-
-
-# Test values:
-func1 = Function('{{cookiecutter.extension_name}}_launcher',
-                 '{{cookiecutter.extension_label}}',
-                 'bal_16.png')
-func2 = Function('send_letter', 'Send Nice Letter', 'send_letter.png')
-test_functions = [func1, ]
 
 
 class MenuEntry(Element):
@@ -122,16 +89,14 @@ class Image(Element):
         nod.append(create_str_prop("ImageSmallURL", icon_location))
 
 
-def create_addon(funcs):
+def create_addon(funcs, output_dir):
     """
     Creation of AddonUI.xcu which contains Toolbar and Menubar
     configuration.
     """
     logger.debug('Start creating %s.', xml_file)
 
-    path = os.path.dirname(os.path.realpath(__file__))
-    path_file = os.path.join(file_location, xml_file)
-    path_file = os.path.join(path, path_file)
+    path_file = os.path.join(output_dir, xml_file)
 
     root = Element("oor:component-data",
                    {"xmlns:oor": "http://openoffice.org/2001/registry",
@@ -155,11 +120,11 @@ def create_addon(funcs):
         tree = ET.ElementTree(root)
         tree.write(xf.name, "utf-8", True)
 
-    logger.info("%s created in -> %s", xml_file, file_location)
+    logger.info("%s created in -> %s", xml_file, path_file)
 
 
 if __name__ == "__main__":
     with open('logging_conf.yaml', 'r') as f:
         log_cfg = yaml.safe_load(f.read())
         logging.config.dictConfig(log_cfg)
-    create_addon(test_functions)
+    # create_addon()

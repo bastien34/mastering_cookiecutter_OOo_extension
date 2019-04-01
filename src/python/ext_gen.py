@@ -27,7 +27,9 @@ cp -r src/python/* ~/.config/libreoffice/4/user/uno_packages/cache/uno_packages/
 """
 
 from com.sun.star.beans import PropertyValue
+from cookiecutter.exceptions import OutputDirExistsException
 from cookiecutter.main import cookiecutter
+from create_addon_ui import create_addon
 
 from ext_gen_utils import (
     msgbox,
@@ -37,8 +39,11 @@ from ext_gen_utils import (
 )
 from ext_gen.options_dialog import NODE, KEYS
 
-COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
 
+COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
+module = "{{cookiecutter.extension_name}}"
+extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
+temp_dir = '/tmp/ext_gen'
 
 class Environ:
     """
@@ -57,6 +62,26 @@ class Environ:
         return self.settings.get('output_dir')
 
 
+class Function:
+    """
+    Define a function.
+
+    Warning: Location attribute contains an ampersand "&" that must
+    be converted as "&amp;" in xml file.
+    """
+
+    def __init__(self, name, label, icon):
+        self.name = name
+        self.label = label
+        self.icon = icon
+
+    @property
+    def location(self):
+        return f"vnd.sun.star.script:{extension_filename}|python" \
+            f"|{module}.py${self.name}?language=Python&location=user:" \
+            f"uno_packages"
+
+
 def ext_gen_launcher(*args):
     """
     Launcher for creating a MissionBal2Word document.
@@ -71,7 +96,7 @@ def ext_gen_launcher(*args):
 
 
 def generate_extension_launcher(*args):
-    msgbox('starting...')
+    print('starting...')
 
     # We get values from configuration tables
     doc = XSCRIPTCONTEXT.getDocument()
@@ -82,19 +107,26 @@ def generate_extension_launcher(*args):
     tb = doc.getTextTables().getByName('option_table')
     option_data = tb.getDataArray()
 
-    # Define the output directory
-    env = Environ()
-    output_dir = env.output_dir
+    funcs = []
+    for i, f in enumerate(function_data):
+        if i and f[0]:
+            funcs.append(Function(*f))
+    create_addon(funcs, temp_dir)
 
     # Define extra_context (global vars)
     extra_context = {}
     [extra_context.update({r[0]: r[1]}) for r in description_data]
 
-    # Launch cookiecutter process
-    cookiecutter(COOKIECUTTER_REPO,
-                 no_input=True,
-                 extra_context=extra_context,
-                 output_dir=output_dir)
+    # Define the output directory and launch cookiecutter process
+    env = Environ()
+    output_dir = env.output_dir
+    try:
+        cookiecutter(COOKIECUTTER_REPO,
+                     no_input=True,
+                     extra_context=extra_context,
+                     output_dir=output_dir)
+    except OutputDirExistsException:
+        msgbox("Extension already exists. Remove it and start again!")
 
 
 g_exportedScripts = ext_gen_launcher, generate_extension_launcher,

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import shutil
+
 import uno
 import pyuno
 from com.sun.star.beans import PropertyValue
@@ -95,3 +97,11 @@ def get_package_path(file_to_find):
         path = path.split(':')[1]
     assert os.path.isfile(path)
     return path_to_url(path)
+
+
+def get_temp_working_directory():
+    temp_dir = '/tmp/ext_gen'
+    if os.path.exists(temp_dir):
+        shutil.rmtree(temp_dir, ignore_errors=True)
+    os.mkdir(temp_dir)
+    return temp_dir
