@@ -1,2 +1,2 @@
-Une super extension en préparation!
+Configurer une nouvelle extension python pour Open office.
 Copyright (c) 2009 Bastien Roques
