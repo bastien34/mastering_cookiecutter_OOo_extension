@@ -26,6 +26,10 @@ update unopkg:
 cp -r src/python/* ~/.config/libreoffice/4/user/uno_packages/cache/uno_packages/lu29198y6r5iy.tmp_/extension_generator_launcher-0.0.1.oxt/python/
 """
 
+# TODO: hooks in cookiecutter part. pre_gen_project
+# TODO: Uses real tmp files or dir !
+
+
 from com.sun.star.beans import PropertyValue
 from config_xcs import create_config_xcs
 from cookiecutter.exceptions import OutputDirExistsException
