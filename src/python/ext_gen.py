@@ -27,6 +27,7 @@ cp -r src/python/* ~/.config/libreoffice/4/user/uno_packages/cache/uno_packages/
 """
 
 from com.sun.star.beans import PropertyValue
+from config_xcs import create_config_xcs
 from cookiecutter.exceptions import OutputDirExistsException
 from cookiecutter.main import cookiecutter
 from create_addon_ui import create_addon
@@ -44,6 +45,7 @@ COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
 module = "{{cookiecutter.extension_name}}"
 extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
 temp_dir = '/tmp/ext_gen'
+
 
 class Environ:
     """
@@ -64,7 +66,8 @@ class Environ:
 
 class Function:
     """
-    Define a function.
+    Define a function, which is used in AddonUi creation for building
+    toolbar and menubar.
 
     Warning: Location attribute contains an ampersand "&" that must
     be converted as "&amp;" in xml file.
@@ -80,6 +83,17 @@ class Function:
         return f"vnd.sun.star.script:{extension_filename}|python" \
             f"|{module}.py${self.name}?language=Python&location=user:" \
             f"uno_packages"
+
+
+class Var:
+    """
+    Var instances are part of config.xcs and dialog creation.
+    """
+    def __init__(self, name, label, vtype, default):
+        self.name = name
+        self.label = label
+        self.vtype = vtype
+        self.default = default
 
 
 def ext_gen_launcher(*args):
@@ -107,11 +121,20 @@ def generate_extension_launcher(*args):
     tb = doc.getTextTables().getByName('option_table')
     option_data = tb.getDataArray()
 
+    # Define functions for toolbar and menubar
     funcs = []
-    for i, f in enumerate(function_data):
-        if i and f[0]:
-            funcs.append(Function(*f))
+    for i, o in enumerate(function_data):
+        if i and o[0]:
+            funcs.append(Function(*o))
     create_addon(funcs, temp_dir)
+
+    # Define vars for config.xcs and dialog.xcu
+    vars = []
+    for i, o in enumerate(option_data):
+        if i and o[0]:
+            vars.append(*o)
+    create_config_xcs(vars, temp_dir)
+
 
     # Define extra_context (global vars)
     extra_context = {}
