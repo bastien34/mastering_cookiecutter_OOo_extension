@@ -31,6 +31,7 @@ from config_xcs import create_config_xcs
 from cookiecutter.exceptions import OutputDirExistsException
 from cookiecutter.main import cookiecutter
 from create_addon_ui import create_addon
+from dialog import create_dialog
 
 from ext_gen_utils import (
     msgbox,
@@ -132,9 +133,11 @@ def generate_extension_launcher(*args):
     vars = []
     for i, o in enumerate(option_data):
         if i and o[0]:
-            vars.append(*o)
+            vars.append(Var(*o))
     create_config_xcs(vars, temp_dir)
 
+    # Create DialogBox
+    create_dialog(vars, temp_dir)
 
     # Define extra_context (global vars)
     extra_context = {}

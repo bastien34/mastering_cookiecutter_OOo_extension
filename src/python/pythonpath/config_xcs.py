@@ -9,9 +9,6 @@ import yaml
 from helpers import (ElemProp, Elem)
 
 
-# General
-# extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
-
 xml_file = "{{cookiecutter.extension_name}}_config.xcs"
 locale = {"xml:lang": "fr"}
 
