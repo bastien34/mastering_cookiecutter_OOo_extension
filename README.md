@@ -51,6 +51,18 @@ When you want to test your extension and compile your work. Dont' use the
 
 Soon, we'll let a script in `tools` dir to generate it.
 
+# TODO:
+
+- Handle images (toolbar and extension)
+
+- generate correct Environ in module (for now it's fixed to previous values) and
+requires manual changes
+
+- data validation: eg. extension_name shouldn't be capitalized nor accepting
+blank spaces.
+
+- supports only **string** and **boolean** types !
+
 
 ### General Vars
 |Keys               | Default values                      | Note         |
