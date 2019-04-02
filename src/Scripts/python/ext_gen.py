@@ -24,6 +24,7 @@
 from cookiecutter.main import cookiecutter
 
 COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
+# COOKIECUTTER_REPO = "../options_extension_template/cookiecutter_ooo_extension"
 extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
 
 
@@ -67,7 +68,7 @@ def generate_extension_launcher(*args):
                  no_input=True,
                  extra_context=extra_context,
                  overwrite_if_exists=True,
-                 checkout='develop')
+                 checkout='master')
 
 
 g_exportedScripts = generate_extension_launcher,
