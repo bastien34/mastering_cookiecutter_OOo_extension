@@ -1,2 +1,0 @@
-Masting and configuring a new python extension for LibO.
-Copyright (c) 2009 Bastien Roques

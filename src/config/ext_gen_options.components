@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<components xmlns="http://openoffice.org/2010/uno-components">
-    <component loader="com.sun.star.loader.Python"
-               uri="../python/ext_gen_dialog_handler.py">
-        <implementation name="com.palaceweb.ext_gen.IM">
-            <service name="com.palaceweb.ext_gen.service"/>
-        </implementation>
-    </component>
-</components>
