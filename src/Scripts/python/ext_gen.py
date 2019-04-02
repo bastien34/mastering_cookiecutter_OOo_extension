@@ -22,10 +22,8 @@
 #
 
 from cookiecutter.main import cookiecutter
-from cookiecutter.exceptions import OutputDirExistsException
 
 COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
-module = "{{cookiecutter.extension_name}}"
 extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
 
 
@@ -40,36 +38,35 @@ def generate_extension_launcher(*args):
     tb = doc.getTextTables().getByName('option_table')
     option_data = tb.getDataArray()
 
+    # Define extra_context (global vars)
+    extra_context = {}
+    for i, f in enumerate(description_data):
+        if i and f[0]:
+            extra_context.update({f[0]: f[1]})
+
     # Define functions for toolbar and menubar
-    extra_context_funcs = []
-    funcs = ['name', 'label', 'icon']
+    funcs = {}
+    funcs_attr = ['name', 'label', 'icon']
     for i, f in enumerate(function_data):
         if i and f[0]:
-            func = dict(zip(funcs, f))
-            func.update({'module': module})
-            extra_context_funcs.append(func)
+            func = dict(zip(funcs_attr, f))
+            funcs.update({f[0]: func})
 
     # Define vars for config.xcs and dialog.xcu
-    extra_context_vars = []
-    option_vars = ['name', 'label', 'type', 'default']
+    variables = {}
+    option_vars = ('name', 'label', 'type', 'default')
     for i, ov in enumerate(option_data):
         if i and ov[0]:
             var = dict(zip(option_vars, ov))
-            extra_context_vars.append(var)
-
-    # Define extra_context (global vars)
-    extra_context_description = {}
-    [extra_context_description.update({r[0]: r[1]}) for r in description_data]
+            variables.update({ov[0]: var})
+    extra_context.update({'vars': variables,
+                          'funcs': funcs})
 
     # Define the output directory and launch cookiecutter process
-    try:
-        cookiecutter(COOKIECUTTER_REPO,
-                     no_input=True,
-                     extra_context={'description': extra_context_description,
-                                    'funcs': extra_context_funcs,
-                                    'vars': extra_context_vars}, )
-    except OutputDirExistsException:
-        print("Extension already exists. Remove it and start again!")
+    cookiecutter(COOKIECUTTER_REPO,
+                 no_input=True,
+                 extra_context=extra_context,
+                 overwrite_if_exists=True)
 
 
 g_exportedScripts = generate_extension_launcher,
