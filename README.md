@@ -56,7 +56,8 @@ Soon, we'll let a script in `tools` dir to generate it.
 - Handle images (toolbar and extension)
 
 - generate correct Environ in module (for now it's fixed to previous values) and
-requires manual changes
+requires manual changes (and extension is not properly installed !) Need to define
+Node list and Environ. 
 
 - data validation: eg. extension_name shouldn't be capitalized nor accepting
 blank spaces.
