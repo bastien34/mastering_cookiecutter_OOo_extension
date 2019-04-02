@@ -1,25 +1,35 @@
 Configurator Tool Extension
 ===========================
 
-## Features
+# Features
 Allow to easily configure a new extension project. Creates Addons like menubar,
 toolbar and options dialog as well.
 
 Powered by [Cookiecutter](https://github.com/audreyr/cookiecutter).
 
-## Usage
+# Usage
 First, get Cookiecutter. Trust me, it's awesome!
 
     $ pip3 install --user "cookiecutter>=1.4.0"
 
-Install extension called 'ext_gen-version.oxt'. In the new menubar, click on 
-"Create a New extension" button.
+If it's not in the repo, generate `extension_generator.odt` with the command:
 
-Configure the output path for your new extension. By default, it's your **/home/$USER/**.
+    $ ./odt_gen.py
+    
+Then copy the `extension_generator.odt` in your working directory. Your extension
+will be created next to it, in the same location.
 
-Once your tables are fulfilled, simply click on the button "Generate your extension".
-It will generate the extension and a **src/** directory in the directory you setup
-as output.
+Open it and activate the macro. Fulfill the tables describing your extension. See
+below for details.
+
+Click the button "GENERATE EXTENSION". That's it!
+
+# What's you gonna have?
+
+The macro run a script against [cookiecutter_ooo_extension](https://github.com/bastien34/cookiecutter_ooo_extension).
+It will generate for you all the boilerplate of the extension you want to use 
+following the form: 
+
 
 ```
 ├── my_extension
@@ -27,11 +37,31 @@ as output.
 │   ├── src
 │   └── README.md
 ```
-You can test the created extension right out of the box. It will contain option 
+
+You can test the created extension generated in `extension/`. It will contain option 
 dialog for the options defined in the generator, menubar and toobar.
 
-Start working in the src/ directory. Python code should be located 
-in `src/python/you_extension.py`.
+Start coding in the src/ directory. Your python code should be located in 
+ `src/python/you_extension.py`.
+ 
+# How to compile my extension?
+
+When you want to test your extension and compile your work. Dont' use the 
+`extension_generator`, it will erase your previous work !
+
+Soon, we'll let a script in `tools` dir to generate it.
+
+# TODO:
+
+- Handle images (toolbar and extension)
+
+- generate correct Environ in module (for now it's fixed to previous values) and
+requires manual changes
+
+- data validation: eg. extension_name shouldn't be capitalized nor accepting
+blank spaces.
+
+- supports only **string** and **boolean** types !
 
 
 ### General Vars
