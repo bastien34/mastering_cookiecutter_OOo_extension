@@ -21,57 +21,13 @@
 #
 #
 
-"""
-update unopkg:
-cp -r src/python/* ~/.config/libreoffice/4/user/uno_packages/cache/uno_packages/lu29198y6r5iy.tmp_/extension_generator_launcher-0.0.1.oxt/python/
-"""
-
-from com.sun.star.beans import PropertyValue
 from cookiecutter.main import cookiecutter
 
-from ext_gen_utils import (
-    msgbox,
-    mri,
-    get_config,
-    get_package_path,
-)
-from ext_gen.options_dialog import NODE, KEYS
-
 COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
-
-
-class Environ:
-    """
-    Supply environment keys.
-        eg: env = Environ()
-            my_url = env.URL
-    """
-
-    def __init__(self):
-        self.node = NODE
-        self.keys = KEYS
-        self.settings = get_config(self.node, self.keys)
-
-    @property
-    def output_dir(self):
-        return self.settings.get('output_dir')
-
-
-def ext_gen_launcher(*args):
-    """
-    Launcher for creating a MissionBal2Word document.
-    """
-    print('Extension generation launcher called!')
-    desktop = XSCRIPTCONTEXT.getDesktop()
-    args = (PropertyValue('Hidden', 0, False, 0),)
-    path = '../../_configurator.odt'
-    gpp = get_package_path(path)
-    return desktop.loadComponentFromURL(
-        gpp, "_default", 0, args)
+extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
 
 
 def generate_extension_launcher(*args):
-    msgbox('starting...')
 
     # We get values from configuration tables
     doc = XSCRIPTCONTEXT.getDocument()
@@ -82,19 +38,35 @@ def generate_extension_launcher(*args):
     tb = doc.getTextTables().getByName('option_table')
     option_data = tb.getDataArray()
 
-    # Define the output directory
-    env = Environ()
-    output_dir = env.output_dir
-
     # Define extra_context (global vars)
     extra_context = {}
-    [extra_context.update({r[0]: r[1]}) for r in description_data]
+    for i, f in enumerate(description_data):
+        if i and f[0]:
+            extra_context.update({f[0]: f[1]})
 
-    # Launch cookiecutter process
+    # Define functions for toolbar and menubar
+    funcs = {}
+    funcs_attr = ['name', 'label', 'icon']
+    for i, f in enumerate(function_data):
+        if i and f[0]:
+            func = dict(zip(funcs_attr, f))
+            funcs.update({f[0]: func})
+
+    # Define vars for config.xcs and dialog.xcu
+    variables = {}
+    option_vars = ('name', 'label', 'type', 'default')
+    for i, ov in enumerate(option_data):
+        if i and ov[0]:
+            var = dict(zip(option_vars, ov))
+            variables.update({ov[0]: var})
+    extra_context.update({'vars': variables,
+                          'funcs': funcs})
+
+    # Define the output directory and launch cookiecutter process
     cookiecutter(COOKIECUTTER_REPO,
                  no_input=True,
                  extra_context=extra_context,
-                 output_dir=output_dir)
+                 overwrite_if_exists=True)
 
 
-g_exportedScripts = ext_gen_launcher, generate_extension_launcher,
+g_exportedScripts = generate_extension_launcher,
