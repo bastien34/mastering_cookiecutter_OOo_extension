@@ -9,12 +9,13 @@ version = '0.0.1'
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('zip_generator')
 file_name = f"extension_generator{version}_local.odt"
+file_location = './'
 
 
 def zip_files():
     msg = f'Zipping Extension generator {version}'
     logger.info(msg)
-    file_path = os.path.join('../temp', file_name)
+    file_path = os.path.join(file_location, file_name)
     shutil.make_archive(file_path, 'zip', 'src/')
     os.rename(file_path + '.zip', file_path)
     logger.info(f'zib has been made in: {file_path}')
