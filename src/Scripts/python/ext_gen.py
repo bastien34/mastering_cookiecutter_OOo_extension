@@ -62,11 +62,12 @@ def generate_extension_launcher(*args):
     extra_context.update({'vars': variables,
                           'funcs': funcs})
 
-    # Define the output directory and launch cookiecutter process
+    # Launch cookiecutter process. Deactivate overwrite mode in production!
     cookiecutter(COOKIECUTTER_REPO,
                  no_input=True,
                  extra_context=extra_context,
-                 overwrite_if_exists=True)
+                 overwrite_if_exists=True,
+                 checkout='develop')
 
 
 g_exportedScripts = generate_extension_launcher,
