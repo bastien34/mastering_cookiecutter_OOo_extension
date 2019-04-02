@@ -8,7 +8,7 @@ import shutil
 version = '0.0.1'
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('zip_generator')
-file_name = f"extension_generator{version}_local.odt"
+file_name = f"extension_generator_{version}.odt"
 file_location = './'
 
 
