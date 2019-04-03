@@ -53,7 +53,7 @@ Dont' use the `extension_generator`, it would erase your previous work !
 # TODO:
 
 - Handle images (toolbar and extension). Means passing to cookiecutter your working
-directory to find statics and integrate them in your project.
+directory to find statics and integrate them into your project.
 
 - Yep, it's a shame! For now supports only **string** and **boolean** types ! No
 more time to develop further !
@@ -62,7 +62,7 @@ more time to develop further !
 
 - Document how to translate !!!
 
-# It bugs? Impossible !
+# It bugs? 
 
 Launch LibO from the command line in a terminal. Activate (at least) the INFO logger
 to see what's going on.
@@ -70,9 +70,11 @@ to see what's going on.
 We handle some exception:
 
 ImageNotFoundError
+
     Not implemented yet as said.
 
 FunctionTypeNotSupportedError
+
     For now, we support only `string` and `boolean`. If you misspell it, it will
     raise **FunctionTypeNotSupportedError**.
 
