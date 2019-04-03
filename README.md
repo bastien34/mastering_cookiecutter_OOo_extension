@@ -8,11 +8,12 @@ toolbar and options dialog as well.
 Powered by [Cookiecutter](https://github.com/audreyr/cookiecutter).
 
 # Usage
-First, get Cookiecutter. Trust me, it's awesome!
+First, get Cookiecutter. Great people says it's awesome!
 
     $ pip3 install --user "cookiecutter>=1.4.0"
 
-If it's not in the repo, generate `extension_generator.odt` with the command:
+Clone this repo. If you don't see `extension_generator.odt`, create it with the 
+command:
 
     $ ./odt_gen.py
     
@@ -39,26 +40,42 @@ following the form: 
 ```
 
 You can test the created extension generated in `extension/`. It will contain option 
-dialog for the options defined in the generator, menubar and toobar.
+dialog for options defined in the generator, menubar and toolbar.
 
 Start coding in the src/ directory. Your python code should be located in 
  `src/python/you_extension.py`.
  
 # How to compile my extension?
 
-When you want to test your extension and compile your work. Dont' use the 
-`extension_generator`, it will erase your previous work !
-
-Soon, we'll let a script in `tools` dir to generate it.
+TODO: Once you're code is ready, you'll find a tool in the src to compile your work. 
+Dont' use the `extension_generator`, it would erase your previous work !
 
 # TODO:
 
-- Handle images (toolbar and extension)
+- Handle images (toolbar and extension). Means passing to cookiecutter your working
+directory to find statics and integrate them in your project.
 
-- data validation: eg. extension_name shouldn't be capitalized nor accepting
-blank spaces.
+- Yep, it's a shame! For now supports only **string** and **boolean** types ! No
+more time to develop further !
 
-- For now supports only **string** and **boolean** types !
+- Handle LICENSE, README, EXTENSION DESCRIPTION... 
+
+- Document how to translate !!!
+
+# It bugs? Impossible !
+
+Launch LibO from the command line in a terminal. Activate (at least) the INFO logger
+to see what's going on.
+
+We handle some exception:
+
+ImageNotFoundError
+    Not implemented yet as said.
+
+FunctionTypeNotSupportedError
+    For now, we support only `string` and `boolean`. If you misspell it, it will
+    raise **FunctionTypeNotSupportedError**.
+
 
 
 ### General Vars
