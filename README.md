@@ -28,9 +28,8 @@ Click the button "GENERATE EXTENSION". That's it!
 # What's you gonna have?
 
 The macro run a script against [cookiecutter_ooo_extension](https://github.com/bastien34/cookiecutter_ooo_extension).
-It will generate for you all the boilerplate of the extension you want to use 
-following the form: 
-
+It will generate for you all the boilerplate of the extension you want to use. Here
+is the layout of the project:
 
 ```
 ├── my_extension
@@ -47,7 +46,7 @@ Start coding in the src/ directory. Your python code should be located in
  
 # How to compile my extension?
 
-TODO: Once you're code is ready, you'll find a tool in the src to compile your work. 
+TODO: Once you're code is ready, you'll find a tool in the src to compile your code. 
 Dont' use the `extension_generator`, it would erase your previous work !
 
 # TODO:
@@ -79,6 +78,7 @@ FunctionTypeNotSupportedError
     raise **FunctionTypeNotSupportedError**.
 
 
+# Technical details
 
 ### General Vars
 |Keys               | Default values                      | Note         |
@@ -96,10 +96,10 @@ FunctionTypeNotSupportedError
 |image_name         | logo.png                            |PNG or JPG, 42x42 pixels
 
 
-### What you gonna have (in details)
+### Full detail of the project source
 As said, 2 dirs (`src/` and `extension`) are created in the output directory. 
 
-#### Treeview of the project source
+#### Treeview of the `src/` content
 
 ```
 ├── AddonUI.xcu
