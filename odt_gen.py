@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('zip_generator')
 file_name = f"extension_generator_{version}.odt"
 file_location = './'
+file_location = '../temp'
 
 
 def zip_files():

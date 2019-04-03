@@ -24,7 +24,6 @@
 from cookiecutter.main import cookiecutter
 
 COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
-# COOKIECUTTER_REPO = "../options_extension_template/cookiecutter_ooo_extension"
 extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
 
 
@@ -44,12 +43,16 @@ def generate_extension_launcher(*args):
     for i, f in enumerate(description_data):
         if i and f[0]:
             extra_context.update({f[0]: f[1]})
+    extra_context['extension_name'] = _clean_entry(
+        extra_context['extension_name'])
 
     # Define functions for toolbar and menubar
     funcs = {}
     funcs_attr = ['name', 'label', 'icon']
     for i, f in enumerate(function_data):
+        f = list(f)
         if i and f[0]:
+            f[0] = _clean_entry(f[0])
             func = dict(zip(funcs_attr, f))
             funcs.update({f[0]: func})
 
@@ -57,7 +60,9 @@ def generate_extension_launcher(*args):
     variables = {}
     option_vars = ('name', 'label', 'type', 'default')
     for i, ov in enumerate(option_data):
+        ov = list(ov)
         if i and ov[0]:
+            ov[0] = _clean_entry(ov[0])
             var = dict(zip(option_vars, ov))
             variables.update({ov[0]: var})
     extra_context.update({'vars': variables,
@@ -69,6 +74,13 @@ def generate_extension_launcher(*args):
                  extra_context=extra_context,
                  overwrite_if_exists=True,
                  checkout='master')
+
+
+def _clean_entry(v):
+    v = v.strip()
+    v = v.replace(" ", "_")
+    v = v.lower()
+    return v
 
 
 g_exportedScripts = generate_extension_launcher,
