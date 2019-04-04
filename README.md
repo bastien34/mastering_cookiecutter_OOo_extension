@@ -63,6 +63,11 @@ more time to develop further !
 
 # It bugs? 
 
+**Are you using Windows operating system?** We need help to test and document the 
+use of this app on Microsoft. Not supported yet...
+
+## Tips
+
 Launch LibO from the command line in a terminal. Activate (at least) the INFO logger
 to see what's going on.
 
