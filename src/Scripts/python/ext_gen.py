@@ -22,6 +22,7 @@
 #
 
 from cookiecutter.main import cookiecutter
+from collections import namedtuple
 
 COOKIECUTTER_REPO = "https://github.com/bastien34/cookiecutter_ooo_extension"
 extension_filename = "{{cookiecutter.extension_name}}-{{cookiecutter.extension_version}}.oxt"
@@ -48,23 +49,23 @@ def generate_extension_launcher(*args):
 
     # Define functions for toolbar and menubar
     funcs = {}
-    funcs_attr = ['name', 'label', 'icon']
+    Func = namedtuple('Func', 'name label icon')
     for i, f in enumerate(function_data):
-        f = list(f)
-        if i and f[0]:
-            f[0] = _clean_entry(f[0])
-            func = dict(zip(funcs_attr, f))
-            funcs.update({f[0]: func})
+        f = Func._make(f)
+        if i and f.name:
+            f = f._replace(name=_clean_entry(f.name))
+            funcs.update({f.name: dict(f._asdict())})
 
     # Define vars for config.xcs and dialog.xcu
     variables = {}
-    option_vars = ('name', 'label', 'type', 'default')
+    Variable = namedtuple('Variable', 'name label type default')
     for i, ov in enumerate(option_data):
-        ov = list(ov)
-        if i and ov[0]:
-            ov[0] = _clean_entry(ov[0])
-            var = dict(zip(option_vars, ov))
-            variables.update({ov[0]: var})
+        v = Variable._make(ov)
+        if i and v.name:
+            v = v._replace(name=_clean_entry(v.name),
+                           type=_clean_entry(v.type))
+            variables.update({v.name: dict(v._asdict())})
+
     extra_context.update({'vars': variables,
                           'funcs': funcs})
 
