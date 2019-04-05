@@ -12,13 +12,13 @@ First, get Cookiecutter. Great people says it's awesome!
 
     $ pip3 install --user "cookiecutter>=1.4.0"
 
-Clone this repo. If you don't see `extension_generator.odt`, create it with the 
-command:
+Clone this repo (don't try to just download extension_generator.odt, it won't work!). 
+If you don't see `extension_generator.odt`, create it with the command:
 
     $ ./odt_gen.py
     
 Then copy the `extension_generator.odt` in your working directory. Your extension
-will be created next to it, in the same location.
+will be created next to it, in the same folder.
 
 Open it and activate the macro. Fulfill the tables describing your extension. See
 below for details.
@@ -28,7 +28,7 @@ Click the button "GENERATE EXTENSION". That's it!
 # What's you gonna have?
 
 The macro run a script against [cookiecutter_ooo_extension](https://github.com/bastien34/cookiecutter_ooo_extension).
-It will generate for you all the boilerplate of the extension you want to use. Here
+It will generate for you all the boilerplate of the extension you want to work on. Here
 is the layout of the project:
 
 ```
@@ -38,11 +38,11 @@ is the layout of the project:
 │   └── README.md
 ```
 
-You can test the created extension generated in `extension/`. It will contain option 
-dialog for options defined in the generator, menubar and toolbar.
+You can test the created extension generated in `extension/`. It contains options 
+dialog for options you defined in `extension_generator.odt`, menubar and toolbar.
 
-Start coding in the src/ directory. Your python code should be located in 
- `src/python/you_extension.py`.
+Start coding in the `src/` directory. Your python code should be located at 
+ `src/python/` in the module `your_extension.py`.
  
 # How to compile my extension?
 
@@ -50,6 +50,8 @@ TODO: Once you're code is ready, you'll find a tool in the src to compile your c
 Dont' use the `extension_generator`, it would erase your previous work !
 
 # TODO:
+
+- Documentation for WINDOWS OS.
 
 - Handle images (toolbar and extension). Means passing to cookiecutter your working
 directory to find statics and integrate them into your project.
@@ -61,18 +63,23 @@ more time to develop further !
 
 - Document how to translate !!!
 
-# It bugs? 
+# It doesn't work? 
 
-Launch LibO from the command line in a terminal. Activate (at least) the INFO logger
-to see what's going on.
+Are you using Windowns operating system? We need you to document the installation 
+(as well of IOs). It works out of the box on Ubuntu OS with LibreOffice.
+
+To debug or understand what's going on, it's important you run LibreOffice from the
+command line. You'll see error logs. It might help since we created some exceptions (see below).
+
+You advocate to activate (at least) the INFO level logger to see what's going on.
 
 We handle some exception:
 
-ImageNotFoundError
+**ImageNotFoundError**
 
     Not implemented yet as said.
 
-FunctionTypeNotSupportedError
+**FunctionTypeNotSupportedError**
 
     For now, we support only `string` and `boolean`. If you misspell it, it will
     raise **FunctionTypeNotSupportedError**.
@@ -274,84 +281,3 @@ Then generate the `.po` file using `itstool`.
     $  itstool -o message_from_dialog.po -i rule.its dialogs/dialog.xdl
     
 You'll have to merge them to existent message.po.
-
-
-## TODO'S
-
-### Create boilerplate from ODT File
-This process could start from a python macro embedded in a `.odt` file.
-
-This file should contain more detailed values used to create a more complete project. 
-First table would contain general vars (keys / values seen above). 
-
-The second table would contain table for Toolbar and Menubar creation as following.
-
-**MenuBar and ToolBar**
-
-| Function name | Function label|Module |Icon |
-| ------------- |:--------------:| :-----:| --- |
-| extension_launcher |My Extension   | my_extension.py |extension_icon.jpg |
-| feature2_launcher      | Feature 2 | my_extension.py |feature2_icon.jpg|
-| etc. | ...      | ...    |... |
-
-And of course, a table to generate the `.xcs ` file containing options we want
-for our Options dialog.
-
-**Variables that need a Dialog Box**
-
-| Var name | Var label | Type | Default value
-| ------------- |:-------------:|:-----:| :---:
-| test_mode |Test mode   | boolean | true
-| token      | Token | string | find a valid token
-| url      | Url | string | https://my_webservice.com/
-
-These tables would help generate these files:
-
-- AddonUI.xcu (Menubar & Toolbar description)
-
-- _config.xcs (vars in Options dialog)
-
-It should be done before the extension generation. See `hooks/pre_gen_project.py`.
-It's made for that.
-
-You'll find a complete file description here : 
-https://wiki.openoffice.org/wiki/Documentation/DevGuide/Extensions/File_Format
-
-
-## Definitions from the specification document
-
-Options dialog Specification can be found at: https://wiki.openoffice.org/wiki/Documentation/DevGuide/Extensions/Options_Dialog
-
-#### Node 
-
-In the spec, it seems that a name for a node might be: `“OpenOffice.org Writer”` 
-which looks like a label. This has to be checked ! Using this node should place 
-a leaf in this node.
-
-#### Leaves
-
-A leaf has a human readable, localized name. Every leaf has exactly one Options 
-page and is assigned to exactly one Node and one Dialog. A leaf cannot have 
-children. 
-
-Leaves also have a unique identifier.
-
-Leaves can be added to an existing Node or Nodes (unclear, we got it from specs).
-
-#### Identifiers 
-
-Modules, nodes, and leaves have an unique identifier. These are used as values 
-for the oor:name attributes of a node element in the xcu file. Other identifiers 
-are used as property values in the `.xcu` files. All these identifiers have to 
-comply to the requirements for node names and value elements off the OOo registry.
-
-To ensure uniqueness, we recommend to form the strings similar to this schema:
-
-**reversed_domainname.company.product.nodename.leafname.**
-
-For example:
-
-`com.mycompany.myextension.mynode.leaf1`
-
-For UTF8 identifier identity is element-by-element identity of the sequences of 
-Unicode scalar values (no case folding, no normalization, etc.).
